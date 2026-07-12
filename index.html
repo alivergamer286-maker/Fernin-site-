@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ferlin Estética e Saúde — O cuidado, transformado em ritual</title>
 <meta name="description" content="Ferlin Estética e Saúde — estética facial, estética corporal e terapias alternativas num ambiente pensado para acolher.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ferlin Estética e Saúde">
+<meta property="og:description" content="Estética facial, corporal e terapias alternativas num ambiente pensado para acolher. Agende sua avaliação.">
+<meta property="og:locale" content="pt_BR">
+<meta name="theme-color" content="#15170f">
+<!-- Depois de publicado, adicione aqui: <meta property="og:image" content="URL_DA_FOTO_DE_CAPA"> e <meta property="og:url" content="SEU_DOMINIO"> -->
+<link rel="icon" href="data:,">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -511,9 +519,113 @@
   }
   .side-dot:hover .label, .side-dot.active .label{opacity:1;transform:translateY(-50%) translateX(0);}
   @media (max-width:1180px){ .side-nav{display:none;} }
+
+  /* ================= WHATSAPP FLOAT ================= */
+  .whatsapp-float{
+    position:fixed;right:22px;bottom:22px;z-index:95;
+    width:54px;height:54px;border-radius:50%;
+    background:var(--gold);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 30px -8px rgba(0,0,0,.5);
+    transition:transform .35s var(--ease), background .35s var(--ease);
+  }
+  .whatsapp-float:hover{background:var(--gold-bright);transform:translateY(-3px) scale(1.05);}
+  .whatsapp-float svg{width:24px;height:24px;}
+  @media (max-width:920px){ .whatsapp-float{right:16px;bottom:16px;width:48px;height:48px;} }
+
+  /* ================= FAQ ================= */
+  .faq-list{border-top:1px solid var(--line-dark);margin-top:2.4rem;}
+  .faq-item{border-bottom:1px solid var(--line-dark);padding:1.4rem 0;}
+  .faq-item summary{
+    cursor:pointer;list-style:none;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    font-family:'Fraunces',serif;font-size:1.1rem;font-weight:400;color:var(--ink-text);
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:"+";flex:none;font-family:'Manrope',sans-serif;font-size:1.5rem;
+    color:var(--gold);transition:transform .3s var(--ease);
+  }
+  .faq-item[open] summary::after{transform:rotate(45deg);}
+  .faq-item p{color:#4a4d3c;line-height:1.75;margin:1rem 0 0;max-width:60ch;font-size:.94rem;}
+
+  /* ================= BOOKING MODAL ================= */
+  .booking-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(15,17,10,.72);backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+    opacity:0;pointer-events:none;transition:opacity .4s var(--ease);
+  }
+  .booking-overlay.open{opacity:1;pointer-events:auto;}
+  .booking-modal{
+    position:relative;width:100%;max-width:460px;max-height:88vh;overflow-y:auto;
+    background:var(--parchment);border-radius:10px;padding:2.4rem 2rem 2rem;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,.55);
+    transform:translateY(18px) scale(.98);opacity:0;
+    transition:transform .45s var(--ease), opacity .45s var(--ease);
+  }
+  .booking-overlay.open .booking-modal{transform:translateY(0) scale(1);opacity:1;}
+  .booking-close{
+    position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;
+    border:none;background:var(--parchment-2);color:var(--ink-text);cursor:pointer;font-size:.85rem;
+  }
+  .booking-step .eyebrow{margin-bottom:.6rem;}
+  .booking-step h3{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:400;color:var(--ink-text);margin:0 0 1.4rem;}
+  .service-pills{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.6rem;}
+  .pill{
+    text-align:left;padding:.9em 1.1em;border-radius:8px;border:1px solid var(--line-dark);
+    background:#fff;cursor:pointer;font-family:'Manrope',sans-serif;font-size:.92rem;color:var(--ink-text);
+    transition:border-color .3s var(--ease), background .3s var(--ease);
+  }
+  .pill.active{border-color:var(--gold);background:rgba(198,151,79,.12);}
+  .booking-label{display:block;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:#6b6e5a;margin:1.1rem 0 .4rem;}
+  .booking-date, .booking-input{
+    width:100%;padding:.8em .9em;border-radius:6px;border:1px solid var(--line-dark);
+    background:#fff;font-family:'Manrope',sans-serif;font-size:.94rem;color:var(--ink-text);
+  }
+  .booking-date:focus, .booking-input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+  .slots-hint{font-size:.84rem;color:#8a8d76;margin:1rem 0 0;}
+  .slots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.8rem;}
+  .slot-btn{
+    padding:.6em .4em;border-radius:6px;border:1px solid var(--line-dark);
+    background:#fff;font-size:.82rem;cursor:pointer;color:var(--ink-text);
+    transition:border-color .25s var(--ease), background .25s var(--ease);
+  }
+  .slot-btn.active{border-color:var(--gold);background:rgba(198,151,79,.16);}
+  .slot-btn:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed;}
+  .booking-summary{background:var(--parchment-2);border-radius:6px;padding:1rem 1.1rem;font-size:.86rem;color:#4a4d3c;line-height:1.6;}
+  .booking-error{color:#9c4a2f;font-size:.82rem;margin:1rem 0 0;}
+  .booking-actions{display:flex;gap:.8rem;margin-top:1.8rem;flex-wrap:wrap;}
+  .booking-actions .btn{flex:1;justify-content:center;min-width:120px;}
+  .booking-success-text{color:#4a4d3c;line-height:1.7;font-size:.94rem;}
+  .booking-success-text strong{color:var(--ink-text);font-family:'Fraunces',serif;}
 </style>
 </head>
 <body class="is-loading">
+
+<script>
+  /* ======================================================================
+     CONFIGURAÇÃO — edite estes valores.
+     SUPABASE_URL e SUPABASE_ANON_KEY: veja o README.md (passo "Configurar o Supabase").
+     WHATSAPP_NUMBER: só dígitos, com código do país. Ex: 5541999999999
+     BUSINESS_HOURS: 0=domingo … 6=sábado. Use null no dia em que a clínica não abre.
+  ====================================================================== */
+  window.FERLIN_CONFIG = {
+    SUPABASE_URL: "COLE_AQUI_A_SUPABASE_URL",
+    SUPABASE_ANON_KEY: "COLE_AQUI_A_ANON_KEY",
+    WHATSAPP_NUMBER: "55XXXXXXXXXXX",
+    BUSINESS_HOURS: {
+      0: null,
+      1: ["09:00","18:00"],
+      2: ["09:00","18:00"],
+      3: ["09:00","18:00"],
+      4: ["09:00","18:00"],
+      5: ["09:00","18:00"],
+      6: ["09:00","13:00"]
+    },
+    SLOT_MINUTES: 50
+  };
+</script>
 
 <div id="preloader">
   <div class="pre-inner">
@@ -531,6 +643,72 @@
   <button class="side-dot" data-target="#contato"><span class="mark"></span><span class="label">Contato</span></button>
 </nav>
 
+<div class="booking-overlay" id="bookingOverlay">
+  <div class="booking-modal" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+    <button type="button" class="booking-close" id="bookingClose" aria-label="Fechar">✕</button>
+    <div class="booking-body">
+
+      <div class="booking-step" data-step="service">
+        <p class="eyebrow">Agendar horário</p>
+        <h3 id="bookingTitle">Qual tratamento você procura?</h3>
+        <div class="service-pills">
+          <button type="button" class="pill" data-service="Estética Facial">Estética Facial</button>
+          <button type="button" class="pill" data-service="Estética Corporal">Estética Corporal</button>
+          <button type="button" class="pill" data-service="Terapias Alternativas">Terapias Alternativas</button>
+        </div>
+        <div class="booking-actions">
+          <button type="button" class="btn btn-fill" id="toStepDate" disabled>Continuar</button>
+        </div>
+      </div>
+
+      <div class="booking-step" data-step="datetime" hidden>
+        <p class="eyebrow">Agendar horário</p>
+        <h3>Escolha o dia e o horário.</h3>
+        <label class="booking-label" for="bookingDate">Data</label>
+        <input type="date" id="bookingDate" class="booking-date">
+        <p class="slots-hint" id="slotsHint">Selecione uma data para ver os horários disponíveis.</p>
+        <div class="slots-grid" id="slotsGrid"></div>
+        <div class="booking-actions">
+          <button type="button" class="btn btn-ghost dark" data-back="service">Voltar</button>
+          <button type="button" class="btn btn-fill" id="toStepInfo" disabled>Continuar</button>
+        </div>
+      </div>
+
+      <div class="booking-step" data-step="info" hidden>
+        <p class="eyebrow">Agendar horário</p>
+        <h3>Seus dados.</h3>
+        <div class="booking-summary" id="bookingSummary"></div>
+        <label class="booking-label" for="clientName">Nome</label>
+        <input type="text" id="clientName" class="booking-input" placeholder="Seu nome completo">
+        <label class="booking-label" for="clientPhone">Telefone / WhatsApp</label>
+        <input type="tel" id="clientPhone" class="booking-input" placeholder="(00) 00000-0000">
+        <label class="booking-label" for="clientNotes">Observações (opcional)</label>
+        <textarea id="clientNotes" class="booking-input" rows="2" placeholder="Alguma informação que a equipe deva saber?"></textarea>
+        <p class="booking-error" id="bookingError" hidden></p>
+        <div class="booking-actions">
+          <button type="button" class="btn btn-ghost dark" data-back="datetime">Voltar</button>
+          <button type="button" class="btn btn-fill" id="submitBooking">Confirmar agendamento</button>
+        </div>
+      </div>
+
+      <div class="booking-step" data-step="success" hidden>
+        <p class="eyebrow">Agendamento recebido</p>
+        <h3>Prontinho, <span id="successName"></span>!</h3>
+        <p class="booking-success-text">Seu horário foi reservado. Código: <strong id="successCode"></strong><br>Guarde esse código — ele ajuda a equipe a te localizar caso precise remarcar.</p>
+        <div class="booking-actions">
+          <a href="#" target="_blank" rel="noopener" class="btn btn-fill" id="successWhatsapp">Confirmar no WhatsApp</a>
+          <button type="button" class="btn btn-ghost dark" id="bookingDone">Fechar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<a class="whatsapp-float" href="https://wa.me/55XXXXXXXXXXX" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l1.4-4.2A8 8 0 1 1 9 18.7L4 20z"/><path d="M8.5 10.2c0 3 2.6 5.4 5.4 5.4"/></svg>
+</a>
+
 <header id="siteHeader">
   <div class="brand">
     <span class="word">Ferlin</span>
@@ -543,7 +721,7 @@
     <a href="#depoimentos">Depoimentos<span class="glow-line"></span></a>
     <a href="#contato">Contato<span class="glow-line"></span></a>
   </nav>
-  <a href="#contato" class="btn btn-fill">Agendar horário</a>
+  <a href="#" class="btn btn-fill" data-open-booking>Agendar horário</a>
 </header>
 
 <!-- ================= HERO ================= -->
@@ -561,7 +739,7 @@
       </h1>
       <p class="sub reveal">Na Ferlin, cada atendimento é pensado para devolver equilíbrio ao corpo e serenidade à mente — num espaço cuidado até no último detalhe.</p>
       <div class="hero-ctas reveal">
-        <a href="#contato" class="btn btn-fill">Agendar avaliação</a>
+        <a href="#" class="btn btn-fill" data-open-booking>Agendar avaliação</a>
         <a href="#tratamentos" class="btn btn-ghost">Conhecer tratamentos</a>
       </div>
       <div class="credibility reveal">
@@ -650,7 +828,7 @@
     </div>
     <div class="services-cta reveal" style="--d:.1s">
       <p>Quer saber qual tratamento é ideal para o seu momento?</p>
-      <a href="#contato" class="btn btn-fill">Falar com a equipe</a>
+      <a href="#" class="btn btn-fill" data-open-booking>Agendar avaliação</a>
     </div>
   </div>
 </section>
@@ -704,6 +882,32 @@
   </div>
 </section>
 
+<!-- ================= FAQ ================= -->
+<section class="light-section" id="faq">
+  <div class="wrap" style="max-width:860px;">
+    <p class="eyebrow reveal">Perguntas frequentes</p>
+    <h2 class="reveal" style="--d:.08s">Dúvidas antes de agendar.</h2>
+    <div class="faq-list">
+      <details class="faq-item reveal" style="--d:.1s">
+        <summary>Preciso agendar com antecedência?</summary>
+        <p>Recomendamos agendar com pelo menos 24 horas de antecedência para garantir o horário que você preferir.</p>
+      </details>
+      <details class="faq-item reveal" style="--d:.16s">
+        <summary>Quais formas de pagamento vocês aceitam?</summary>
+        <p>[inserir formas de pagamento aceitas — ex: Pix, cartão de crédito/débito, dinheiro]</p>
+      </details>
+      <details class="faq-item reveal" style="--d:.22s">
+        <summary>Preciso de algum preparo antes do atendimento?</summary>
+        <p>Cada tratamento tem orientações específicas, que a nossa equipe explica no momento do agendamento ou no primeiro contato.</p>
+      </details>
+      <details class="faq-item reveal" style="--d:.28s">
+        <summary>Posso cancelar ou remarcar meu horário?</summary>
+        <p>Sim — é só chamar no WhatsApp com o quanto antes possível, informando o código do seu agendamento.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ================= CONTATO ================= -->
 <section class="dark-section" id="contato">
   <div class="wrap contact-grid">
@@ -712,8 +916,9 @@
       <h2 class="reveal" style="--d:.08s">Vamos cuidar de você.</h2>
       <p class="sub reveal" style="--d:.16s">Marque sua avaliação e descubra, com calma, qual tratamento combina com o seu momento.</p>
       <div class="contact-ctas reveal" style="--d:.24s">
-        <a href="#" class="btn btn-fill">Chamar no WhatsApp</a>
-        <a href="#" class="btn btn-ghost">Ver rotas</a>
+        <a href="#" class="btn btn-fill" data-open-booking>Agendar horário</a>
+        <a href="https://wa.me/55XXXXXXXXXXX" target="_blank" rel="noopener" class="btn btn-ghost">Chamar no WhatsApp</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Ferlin+Est%C3%A9tica+e+Sa%C3%BAde" target="_blank" rel="noopener" class="btn btn-ghost">Ver rotas</a>
       </div>
     </div>
     <div class="info-list reveal" style="--d:.2s">
@@ -951,6 +1156,209 @@
   document.addEventListener('scroll', updateRail, {passive:true});
   updateRail();
 
+})();
+</script>
+
+<script>
+/* ================= AGENDAMENTO (Supabase) ================= */
+(function(){
+  var cfg = window.FERLIN_CONFIG || {};
+  var configured = cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY && cfg.SUPABASE_URL.indexOf('COLE_AQUI') === -1;
+  var sb = (configured && window.supabase) ? window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY) : null;
+
+  var overlay = document.getElementById('bookingOverlay');
+  if(!overlay) return;
+  var closeBtn = document.getElementById('bookingClose');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.booking-step'));
+  var state = { service:null, date:null, time:null };
+
+  function showStep(name){
+    steps.forEach(function(s){ s.hidden = s.getAttribute('data-step') !== name; });
+  }
+  function todayStr(){ return new Date().toISOString().slice(0,10); }
+
+  function resetBooking(){
+    state = { service:null, date:null, time:null };
+    document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+    document.getElementById('toStepDate').disabled = true;
+    document.getElementById('bookingDate').value = '';
+    document.getElementById('slotsGrid').innerHTML = '';
+    document.getElementById('slotsHint').hidden = false;
+    document.getElementById('slotsHint').textContent = 'Selecione uma data para ver os horários disponíveis.';
+    document.getElementById('toStepInfo').disabled = true;
+    document.getElementById('clientName').value = '';
+    document.getElementById('clientPhone').value = '';
+    document.getElementById('clientNotes').value = '';
+    document.getElementById('bookingError').hidden = true;
+    var submitBtn = document.getElementById('submitBooking');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Confirmar agendamento';
+    showStep('service');
+  }
+
+  function openModal(){
+    if(!sb){
+      alert('O agendamento online ainda não foi configurado neste site. Fale pelo WhatsApp por enquanto — use o botão redondo no canto da tela.');
+      return;
+    }
+    resetBooking();
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-open-booking]').forEach(function(btn){
+    btn.addEventListener('click', function(e){ e.preventDefault(); openModal(); });
+  });
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+
+  /* step 1 — service */
+  document.querySelectorAll('.pill').forEach(function(pill){
+    pill.addEventListener('click', function(){
+      document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+      pill.classList.add('active');
+      state.service = pill.getAttribute('data-service');
+      document.getElementById('toStepDate').disabled = false;
+    });
+  });
+  document.getElementById('toStepDate').addEventListener('click', function(){ showStep('datetime'); });
+  document.querySelectorAll('[data-back]').forEach(function(b){
+    b.addEventListener('click', function(){ showStep(b.getAttribute('data-back')); });
+  });
+
+  /* step 2 — date + slots */
+  var dateInput = document.getElementById('bookingDate');
+  var slotsGrid = document.getElementById('slotsGrid');
+  var slotsHint = document.getElementById('slotsHint');
+  var toStepInfo = document.getElementById('toStepInfo');
+
+  dateInput.min = todayStr();
+  dateInput.max = new Date(Date.now() + 60*24*60*60*1000).toISOString().slice(0,10);
+
+  function timeToMinutes(t){ var p = t.split(':'); return (+p[0])*60 + (+p[1]); }
+  function minutesToTime(m){ var h = Math.floor(m/60), mi = m%60; return (h<10?'0':'')+h+':'+(mi<10?'0':'')+mi; }
+
+  function buildDaySlots(dateStr){
+    var d = new Date(dateStr + 'T00:00:00');
+    var hours = cfg.BUSINESS_HOURS ? cfg.BUSINESS_HOURS[d.getDay()] : null;
+    if(!hours) return [];
+    var start = timeToMinutes(hours[0]), end = timeToMinutes(hours[1]);
+    var dur = cfg.SLOT_MINUTES || 50;
+    var slots = [];
+    for(var m = start; m + dur <= end; m += dur){ slots.push(minutesToTime(m)); }
+    return slots;
+  }
+
+  dateInput.addEventListener('change', function(){
+    state.date = dateInput.value;
+    state.time = null;
+    toStepInfo.disabled = true;
+    slotsGrid.innerHTML = '';
+    if(!state.date) return;
+    var allSlots = buildDaySlots(state.date);
+    if(!allSlots.length){
+      slotsHint.hidden = false;
+      slotsHint.textContent = 'Fechado nesse dia — escolha outra data.';
+      return;
+    }
+    slotsHint.hidden = false;
+    slotsHint.textContent = 'Carregando horários...';
+    sb.rpc('get_booked_slots', { p_date: state.date }).then(function(res){
+      if(res.error){ throw res.error; }
+      var taken = (res.data || []).map(function(r){ return r.time_slot; });
+      var isToday = state.date === todayStr();
+      var now = new Date();
+      var nowMinutes = now.getHours()*60 + now.getMinutes();
+      slotsHint.hidden = true;
+      slotsGrid.innerHTML = '';
+      allSlots.forEach(function(t){
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.className = 'slot-btn'; btn.textContent = t;
+        var past = isToday && timeToMinutes(t) <= nowMinutes;
+        if(taken.indexOf(t) !== -1 || past){
+          btn.disabled = true;
+        } else {
+          btn.addEventListener('click', function(){
+            document.querySelectorAll('.slot-btn').forEach(function(s){ s.classList.remove('active'); });
+            btn.classList.add('active');
+            state.time = t;
+            toStepInfo.disabled = false;
+          });
+        }
+        slotsGrid.appendChild(btn);
+      });
+    }).catch(function(){
+      slotsHint.hidden = false;
+      slotsHint.textContent = 'Não foi possível carregar os horários agora. Tente novamente.';
+    });
+  });
+
+  function formatDate(dateStr){
+    var d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'long' });
+  }
+
+  toStepInfo.addEventListener('click', function(){
+    document.getElementById('bookingSummary').innerHTML =
+      '<strong>' + state.service + '</strong><br>' + formatDate(state.date) + ' às ' + state.time;
+    showStep('info');
+  });
+
+  /* step 3 — submit */
+  document.getElementById('submitBooking').addEventListener('click', function(){
+    var name = document.getElementById('clientName').value.trim();
+    var phone = document.getElementById('clientPhone').value.trim();
+    var notes = document.getElementById('clientNotes').value.trim();
+    var errEl = document.getElementById('bookingError');
+    if(!name || !phone){
+      errEl.textContent = 'Preencha nome e telefone para continuar.';
+      errEl.hidden = false;
+      return;
+    }
+    errEl.hidden = true;
+    var submitBtn = document.getElementById('submitBooking');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+
+    sb.from('bookings').insert({
+      service: state.service,
+      booking_date: state.date,
+      time_slot: state.time,
+      client_name: name,
+      client_phone: phone,
+      notes: notes || null
+    }).select().single().then(function(res){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Confirmar agendamento';
+      if(res.error){
+        if(res.error.code === '23505'){
+          errEl.textContent = 'Esse horário acabou de ser reservado por outra pessoa. Volte e escolha outro, por favor.';
+        } else {
+          errEl.textContent = 'Não foi possível concluir o agendamento agora. Tente novamente.';
+        }
+        errEl.hidden = false;
+        return;
+      }
+      var code = (res.data && res.data.id) ? String(res.data.id).slice(0,8).toUpperCase() : '—';
+      document.getElementById('successName').textContent = name.split(' ')[0];
+      document.getElementById('successCode').textContent = code;
+      var waMsg = encodeURIComponent('Olá! Acabei de agendar na Ferlin: ' + state.service + ' em ' + formatDate(state.date) + ' às ' + state.time + '. Nome: ' + name + '. Código: ' + code);
+      document.getElementById('successWhatsapp').href = 'https://wa.me/' + (cfg.WHATSAPP_NUMBER || '') + '?text=' + waMsg;
+      showStep('success');
+    }).catch(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Confirmar agendamento';
+      errEl.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
+      errEl.hidden = false;
+    });
+  });
+
+  document.getElementById('bookingDone').addEventListener('click', closeModal);
 })();
 </script>
 </body>
